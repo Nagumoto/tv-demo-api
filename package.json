@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/Nagumoto/tv-demo-api/issues"
   },
-  "homepage": "https://github.com/Nagumoto/tv-demo-api#readme"
+  "homepage": "https://github.com/Nagumoto/tv-demo-api#readme",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
 }
