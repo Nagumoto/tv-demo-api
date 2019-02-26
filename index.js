@@ -3,7 +3,7 @@ const app = express()
 const bodyParser = require('body-parser')
 const db = require('monk')('mongodb://admin:password1@ds048878.mlab.com:48878/tv-demo-project')
 const tvShowsCollection = db.get('tvShows')
-const port = 4000
+const port = process.env.PORT || 4000
 const tvShows = []
 
 app.use(bodyParser.json())
