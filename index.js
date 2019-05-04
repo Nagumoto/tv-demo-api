@@ -49,7 +49,12 @@ app.route('/shows')
     .put((req, res) => {
         console.log('Oh sure, now you\'re putting things?')
         res.send(req.body)})
-app.delete('/shows/:name', (req, res) => res.send('Beleted... I mean deleted.'))
+
+app.route('/shows/:_id')
+    .delete((req, res) => {
+        tvShowsCollection.remome({_id:(req.params._id)})
+        res.send('Deleted '+req)
+    })
 
 
 
