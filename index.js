@@ -16,44 +16,35 @@ app.use((req, res, next) => {
     next()
 })
 
-// app.route('/') 
-//     .get( async (req, res) => {
-//         try {
-//         const tvShow = await tvShowsCollection.find(req.params.id)
-//         res.send(tvShow)
-
-//         // console.log('Welcome! Are you ready to begin?')
-//         // res.send('Welcome! Are you ready to begin?')
-//     } catch(err) {
-//         console.log(err)
-//     }
-//     })
-    
 app.route('/shows')
-    .get( async (req, res) => {
+    .get(async (req, res) => {
         try {
-        const tvShow = await tvShowsCollection.find(req.params._id)
-        res.send(tvShow)
-
-        // console.log('Did you just Get something?', tvShows)
-        // res.json(tvShows)
-        } catch(err) {
+            const tvShow = await tvShowsCollection.find(req.params._id)
+            res.send(tvShow)
+        } catch (err) {
             console.log(err)
         }
-        })
-    .post( async (req, res) => {
+    })
+    .post(async (req, res) => {
         tvShowsCollection.insert(req.body)
         tvShows.push(req.body)
-        console.log('Hey! You just Post things whenever you feel like it don\'t you?', tvShows)
-        res.send(res.json(tvShows))})
-    .put((req, res) => {
-        console.log('Oh sure, now you\'re putting things?')
-        res.send(req.body)})
+        res.send(tvShows)
+    })
 
 app.route('/shows/:_id')
-    .delete((req, res) => {
-        tvShowsCollection.remome({_id:(req.params._id)})
-        res.send('Deleted '+req)
+    .delete(async (req, res) => {
+        try {
+            await tvShowsCollection.remove(req.params._id)
+        } catch (err) {
+            console.log(err)
+        }
+    })
+    .put(async (req, res) => {
+        try {
+            await tvShowsCollection.update(req.params._id, req.body)
+        } catch (err) {
+            console.log(err)
+        }
     })
 
 
