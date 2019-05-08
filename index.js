@@ -4,7 +4,6 @@ const bodyParser = require('body-parser')
 const db = require('monk')('mongodb://admin:password1@ds048878.mlab.com:48878/tv-demo-project')
 const tvShowsCollection = db.get('tvShows')
 const port = process.env.PORT || 4000
-const tvShows = []
 
 app.use(bodyParser.json())
 
@@ -19,22 +18,27 @@ app.use((req, res, next) => {
 app.route('/shows')
     .get(async (req, res) => {
         try {
-            const tvShow = await tvShowsCollection.find(req.params._id)
-            res.send(tvShow)
+            const tvShows = await tvShowsCollection.find()
+            res.send(tvShows)
         } catch (err) {
             console.log(err)
         }
     })
     .post(async (req, res) => {
+        try {
         tvShowsCollection.insert(req.body)
-        tvShows.push(req.body)
+        const tvShows = await tvShowsCollection.find()
         res.send(tvShows)
+        } catch (err) {
+            console.log(err)
+        }
     })
 
 app.route('/shows/:_id')
     .delete(async (req, res) => {
         try {
             await tvShowsCollection.remove(req.params._id)
+            .then(res.send(await tvShowsCollection.find()))
         } catch (err) {
             console.log(err)
         }
@@ -42,6 +46,7 @@ app.route('/shows/:_id')
     .put(async (req, res) => {
         try {
             await tvShowsCollection.update(req.params._id, req.body)
+            .then(res.send(req.body))
         } catch (err) {
             console.log(err)
         }
